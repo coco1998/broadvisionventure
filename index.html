@@ -432,6 +432,42 @@
             border: 1px solid var(--border);
             border-radius: 100px;
         }
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+        .card-logo-img {
+            width: 46px; height: 46px;
+            border-radius: 11px;
+            object-fit: contain;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            padding: 8px;
+            flex-shrink: 0;
+        }
+        .card-monogram {
+            width: 46px; height: 46px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #fff;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .card-name-en {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-faint);
+            margin-top: 3px;
+            letter-spacing: 0.03em;
+        }
         .card-desc {
             color: var(--text-dim);
             font-size: 0.85rem;
@@ -683,10 +719,6 @@
                 <span class="label">成立年份</span>
             </div>
             <div class="hero-stat">
-                <span class="num">9+</span>
-                <span class="label">AI投资组合</span>
-            </div>
-            <div class="hero-stat">
                 <span class="num">2000万-1亿</span>
                 <span class="label">单笔投资区间</span>
             </div>
@@ -857,6 +889,7 @@
         {
             name: "生数科技",
             nameEn: "ShengShu",
+            monogram: "S",
             layer: "model",
             layerLabel: "基模层",
             desc: "全球首个实现数字世界与物理世界统一的通用世界模型公司。核心产品 Vidu 视频大模型，基于 U-ViT 融合架构。清华系团队，估值突破 20 亿美元，正推进赴港 IPO。",
@@ -866,6 +899,7 @@
         {
             name: "潞晨科技",
             nameEn: "Luchen",
+            logo: "logos/luchen.ico",
             layer: "infra",
             layerLabel: "Infra 层",
             desc: "AI 基础设施公司，核心产品 Colossal-AI 分布式训练系统与 Open-Sora 视频模型。GitHub 6 万+ Stars，双双登顶全球第一。创始人尤洋，NUS 校长青年教授。",
@@ -875,6 +909,7 @@
         {
             name: "影微创新",
             nameEn: "InnoVision",
+            logo: "logos/imvision.png",
             layer: "infra",
             layerLabel: "Infra 层",
             desc: "端侧大模型 AI 芯片全栈自研企业。国内第一家基于 Transformer+Diffusion 架构量产的端侧 AI 芯片公司。2025 年出货 500 万颗，2026 年突破千万级。",
@@ -884,15 +919,17 @@
         {
             name: "羲禾科技",
             nameEn: "Xihe",
+            logo: "logos/xphor.png",
             layer: "infra",
             layerLabel: "Infra 层",
-            desc: "全球头部独立第三方硅光集成芯片设计公司。产品覆盖 400G/800G/1.6T，全球市占率 13%。2025 年营收 4.61 亿，三年复合增长率 760%，已申报科创板 IPO。",
-            meta: ["硅光芯片", "市占率 13%", "IPO 进行中"],
+            desc: "全球头部独立第三方硅光集成芯片设计公司，高速光互联领域的隐形冠军。产品覆盖 400G/800G/1.6T 全场景，全球市占率领先，已申报科创板 IPO。",
+            meta: ["硅光芯片", "全球领先", "IPO 进行中"],
             link: "#"
         },
         {
             name: "比特幻境",
             nameEn: "BitFantasy",
+            monogram: "B",
             layer: "hardware",
             layerLabel: "AI 硬件",
             desc: "AI 智能眼镜硬件公司，品牌 NIMO。29g 极致轻便，自研 0.03cc 微型光机，定价 2499 元。核心团队来自华为、Meta Reality Labs，重构光机、波导、芯片、电池全链路。",
@@ -902,6 +939,7 @@
         {
             name: "智平方",
             nameEn: "AI²Robotics",
+            logo: "logos/ai2robotics.ico",
             layer: "embodied",
             layerLabel: "具身智能",
             desc: "大湾区首个估值突破 200 亿的具身智能企业。自研 AlphaBrain 具身大模型，全球首发类脑架构 VLA——NeuroVLA。碰撞后 20ms 安全反射，脊髓层功耗仅 0.4W。",
@@ -911,6 +949,7 @@
         {
             name: "加速进化",
             nameEn: "Booster",
+            monogram: "B",
             layer: "embodied",
             layerLabel: "具身智能",
             desc: "人形机器人公司，产品 Booster T1 / K1。清华系团队 20 年人形机器人积累，全球累计出货超千台，覆盖 20+ 国家。RoboCup 世界冠军机型，入选福布斯 AI TOP50。",
@@ -920,6 +959,7 @@
         {
             name: "星尘智能",
             nameEn: "Stardust",
+            logo: "logos/astribot.ico",
             layer: "embodied",
             layerLabel: "具身智能",
             desc: "全球首家实现绳驱 AI 机器人量产的具身智能企业。三位一体全栈自研：AI 模型—具身 OS—绳驱本体。估值超 100 亿，已完成股改冲刺 IPO，千台级批量交付。",
@@ -936,9 +976,12 @@
         grid.innerHTML = items.map((p, i) => `
             <div class="portfolio-card" style="animation-delay: ${i * 80}ms" data-link="${p.link}">
                 <div class="card-top">
-                    <div>
-                        <div class="card-logo">${p.name}</div>
-                        <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); margin-top: 2px;">${p.nameEn}</div>
+                    <div class="card-head">
+                        ${p.logo ? `<img class="card-logo-img" src="${p.logo}" alt="${p.name}">` : `<div class="card-monogram">${p.monogram}</div>`}
+                        <div>
+                            <div class="card-logo">${p.name}</div>
+                            <div class="card-name-en">${p.nameEn}</div>
+                        </div>
                     </div>
                     <span class="card-layer-tag">${p.layerLabel}</span>
                 </div>
