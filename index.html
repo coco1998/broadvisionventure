@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博华资本 — 先相信，再看见</title>
+    <meta name="description" content="博华资本 | 人民币科技基金，管理规模超300亿元。AI Native 全栈投资布局，从基模到具身，选择先相信再看见。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #07070b;
+            --bg-secondary: #0d0d14;
+            --bg-card: #111120;
+            --text: #e8e8f0;
+            --text-dim: #8a8aa0;
+            --text-faint: #50506a;
+            --accent: #6366f1;
+            --accent-glow: #818cf8;
+            --accent-warm: #f59e0b;
+            --border: rgba(255,255,255,0.06);
+            --border-hover: rgba(255,255,255,0.14);
+            --font-display: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            --font-body: 'Noto Sans SC', 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Particle canvas background */
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* Ambient gradient glow */
+        .ambient-glow {
+            position: fixed;
+            top: -20%; left: 50%;
+            transform: translateX(-50%);
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .ambient-glow-2 {
+            position: fixed;
+            bottom: -10%; right: -10%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(245,158,11,0.04) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 20px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            background: rgba(7,7,11,0.65);
+            border-bottom: 1px solid var(--border);
+            transition: padding 0.3s ease;
+        }
+        nav.scrolled { padding: 14px 48px; }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 0.05em;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo .logo-mark {
+            width: 28px; height: 28px;
+            border: 1.5px solid var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: var(--accent-glow);
+            background: rgba(99,102,241,0.08);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 400;
+            transition: color 0.25s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--accent-glow);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Main container */
+        main { position: relative; z-index: 1; }
+
+        section {
+            padding: 120px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 80px;
+            position: relative;
+        }
+        .hero-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-glow);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 1s 0.2s forwards;
+        }
+        .hero-tag::before {
+            content: '';
+            display: inline-block;
+            width: 32px; height: 1px;
+            background: var(--accent);
+            margin-right: 14px;
+            vertical-align: middle;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeUp 1s 0.4s forwards;
+        }
+        .hero-title .accent-text {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            max-width: 560px;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeUp 1s 0.6s forwards;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 56px;
+            opacity: 0;
+            animation: fadeUp 1s 0.8s forwards;
+        }
+        .hero-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .hero-stat .num {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .hero-stat .label {
+            font-size: 0.75rem;
+            color: var(--text-faint);
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section headers */
+        .section-header {
+            margin-bottom: 64px;
+        }
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--accent-glow);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .section-label::before {
+            content: '◆ ';
+            color: var(--accent);
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: 20px;
+        }
+        .section-desc {
+            font-size: 1rem;
+            color: var(--text-dim);
+            max-width: 640px;
+            line-height: 1.7;
+        }
+
+        /* About section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+        .about-text p {
+            color: var(--text-dim);
+            margin-bottom: 24px;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+        .about-text p strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+        .about-visual {
+            position: sticky;
+            top: 120px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        .stat-card .num {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-card .desc {
+            color: var(--text-dim);
+            font-size: 0.875rem;
+            margin-top: 8px;
+        }
+
+        /* AI Native section */
+        .native-section {
+            position: relative;
+        }
+        .native-card {
+            background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(192,132,252,0.03));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        .native-card::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(99,102,241,0.1), transparent 70%);
+            pointer-events: none;
+        }
+        .native-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 40px;
+        }
+        .native-feature {
+            position: relative;
+        }
+        .native-feature .icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+        }
+        .native-feature h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .native-feature p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        /* Portfolio - Layer system */
+        .layer-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .layer-tab {
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: var(--bg-card);
+            color: var(--text-dim);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-body);
+        }
+        .layer-tab:hover {
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+        .layer-tab.active {
+            background: rgba(99,102,241,0.12);
+            border-color: var(--accent);
+            color: var(--accent-glow);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .portfolio-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(99,102,241,0.04));
+            opacity: 0;
+            transition: opacity 0.35s;
+        }
+        .portfolio-card:hover {
+            border-color: rgba(99,102,241,0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(99,102,241,0.08);
+        }
+        .portfolio-card:hover::before { opacity: 1; }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .card-logo {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+        }
+        .card-layer-tag {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-faint);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+        }
+        .card-desc {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+        .card-meta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.75rem;
+            color: var(--text-faint);
+        }
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-meta .dot {
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+        }
+
+        /* Frontier section */
+        .frontier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .frontier-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px 24px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .frontier-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+            transition: width 0.4s;
+        }
+        .frontier-item:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+        .frontier-item:hover::after { width: 100%; }
+        .frontier-item .label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-faint);
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+        .frontier-item h4 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .frontier-item p {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        /* Philosophy section */
+        .philosophy {
+            text-align: center;
+            padding: 160px 48px;
+            position: relative;
+        }
+        .philosophy-quote {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 32px;
+        }
+        .philosophy-quote .line1 {
+            display: block;
+            color: var(--text);
+        }
+        .philosophy-quote .line2 {
+            display: block;
+            background: linear-gradient(135deg, #818cf8, #c084fc, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .philosophy-desc {
+            color: var(--text-dim);
+            max-width: 520px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 60px 48px 40px;
+            position: relative;
+            z-index: 1;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 32px;
+        }
+        .footer-brand .name {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .footer-brand .tagline {
+            color: var(--text-faint);
+            font-size: 0.8rem;
+        }
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.25s;
+        }
+        .footer-links a:hover { color: var(--text); }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-faint);
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            section { padding: 80px 20px; }
+            .nav-links { display: none; }
+            .about-grid { grid-template-columns: 1fr; gap: 40px; }
+            .native-features { grid-template-columns: 1fr; }
+            .hero-stats { flex-wrap: wrap; gap: 24px; }
+            .native-card { padding: 28px; }
+            .footer-inner { flex-direction: column; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px; left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 1s 1.2s forwards;
+        }
+        .scroll-indicator .text {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-faint);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        .scroll-indicator .line {
+            width: 1px; height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="ambient-glow"></div>
+<div class="ambient-glow-2"></div>
+
+<nav id="navbar">
+    <a href="#" class="nav-logo">
+        <span class="logo-mark">B</span>
+        博华资本
+    </a>
+    <ul class="nav-links">
+        <li><a href="#about">关于</a></li>
+        <li><a href="#team">AI Native</a></li>
+        <li><a href="#portfolio">投资布局</a></li>
+        <li><a href="#frontier">前沿方向</a></li>
+        <li><a href="https://www.broadvisionfunds.com" target="_blank">官网 ↗</a></li>
+    </ul>
+</nav>
+
+<main>
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-tag">BVF · RMB Technology Fund · Since 2018</div>
+        <h1 class="hero-title">
+            先相信，<span class="accent-text">再看见。</span>
+        </h1>
+        <p class="hero-subtitle">
+            博华资本，管理规模超 300 亿元的人民币科技基金。<br>
+            全栈布局 AI，从基模到具身，陪原创技术走更远的路。
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="num">300亿+</span>
+                <span class="label">管理规模</span>
+            </div>
+            <div class="hero-stat">
+                <span class="num">2018</span>
+                <span class="label">成立年份</span>
+            </div>
+            <div class="hero-stat">
+                <span class="num">9+</span>
+                <span class="label">AI投资组合</span>
+            </div>
+            <div class="hero-stat">
+                <span class="num">2000万-1亿</span>
+                <span class="label">单笔投资区间</span>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span class="text">Scroll</span>
+            <div class="line"></div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="section-header reveal">
+            <div class="section-label">About BVF</div>
+            <h2 class="section-title">一家选择「长期」的科技基金</h2>
+            <p class="section-desc">不纠结短期商业化收入，更看重原创技术壁垒和长期爆发力。</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-text reveal">
+                <p>博华资本成立于 <strong>2018 年</strong>，是一家管理规模超 <strong>300 亿元</strong>的人民币科技基金。我们以直接投资与基金投资双轮驱动，是保险资管业协会评定的 A 类基金管理人。</p>
+                <p>2024 年，我们正式组建 <strong>AI Native 投资团队</strong>，成员以 95 后为主，决策灵活，匹配 AI 行业快速迭代的节奏。我们不套用传统 PE 的框架去看 AI——我们用第一性原理理解技术，用工程师视角评估团队。</p>
+                <p>基金期限长，是我们最大的底气。我们可以陪科技公司走更久的路，不纠结短期的商业化收入，更看重原创技术壁垒和长期爆发力。我们选择先相信，再看见。</p>
+            </div>
+            <div class="about-visual reveal">
+                <div class="stat-card">
+                    <div class="num">300亿+</div>
+                    <div class="desc">在管基金规模（人民币）</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num">A类</div>
+                    <div class="desc">保险资管业协会评定基金管理人</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num">2024</div>
+                    <div class="desc">AI Native 团队组建元年</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI NATIVE TEAM -->
+    <section id="team" class="native-section">
+        <div class="section-header reveal">
+            <div class="section-label">AI Native Team</div>
+            <h2 class="section-title">用工程师的方式做投资</h2>
+            <p class="section-desc">95后团队，AI原生思维，快速决策，深度认知。</p>
+        </div>
+        <div class="native-card reveal">
+            <div class="section-title" style="font-size: 1.3rem; margin-bottom: 8px;">我们不是在「看项目」，我们是在理解系统</div>
+            <p style="color: var(--text-dim); font-size: 0.95rem; max-width: 560px;">
+                AI Native 团队于 2024 年正式组建。我们不套用消费互联网时代的投资框架，而是从底层技术出发——理解架构差异、判断模型壁垒、追踪开源动态，用技术认知做投资决策。
+            </p>
+            <div class="native-features">
+                <div class="native-feature">
+                    <div class="icon">⚡</div>
+                    <h4>决策灵活</h4>
+                    <p>扁平架构，快速响应。匹配 AI 行业以月为单位迭代的技术节奏，不错过窗口期。</p>
+                </div>
+                <div class="native-feature">
+                    <div class="icon">🔬</div>
+                    <h4>技术深度</h4>
+                    <p>从模型架构到芯片制程，从分布式训练到端侧推理。用工程师视角评估技术壁垒。</p>
+                </div>
+                <div class="native-feature">
+                    <div class="icon">∞</div>
+                    <h4>长期陪跑</h4>
+                    <p>基金期限长，不急于退出。给原创技术足够的时间证明自己，陪创业者走更远的路。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio">
+        <div class="section-header reveal">
+            <div class="section-label">Portfolio · 全栈投资布局</div>
+            <h2 class="section-title">从基模层到具身智能</h2>
+            <p class="section-desc">全栈路线，覆盖 AI 技术栈每一层。重仓基模，深耕 Infra，布局硬件，出手具身。</p>
+        </div>
+
+        <div class="layer-tabs reveal">
+            <button class="layer-tab active" data-layer="all">全部</button>
+            <button class="layer-tab" data-layer="model">基模层</button>
+            <button class="layer-tab" data-layer="infra">Infra 层</button>
+            <button class="layer-tab" data-layer="hardware">AI 硬件</button>
+            <button class="layer-tab" data-layer="embodied">具身智能</button>
+        </div>
+
+        <div class="portfolio-grid reveal" id="portfolioGrid">
+            <!-- Cards injected by JS -->
+        </div>
+    </section>
+
+    <!-- FRONTIER -->
+    <section id="frontier">
+        <div class="section-header reveal">
+            <div class="section-label">Frontier · 前沿方向</div>
+            <h2 class="section-title">在下一条曲线发生之前</h2>
+            <p class="section-desc">我们持续关注尚未形成共识的前沿领域。选择先相信，再看见。</p>
+        </div>
+        <div class="frontier-grid reveal">
+            <div class="frontier-item">
+                <div class="label">01</div>
+                <h4>AI4S</h4>
+                <p>AI for Science。用大模型理解物理世界规律，加速科学发现。</p>
+            </div>
+            <div class="frontier-item">
+                <div class="label">02</div>
+                <h4>AI4AI</h4>
+                <p>AI 驱动的 AI 研发自动化。让模型自己设计模型，让算法自己进化。</p>
+            </div>
+            <div class="frontier-item">
+                <div class="label">03</div>
+                <h4>世界模型</h4>
+                <p>构建对物理世界规律建模、推理、预测、行动的通用智能框架。</p>
+            </div>
+            <div class="frontier-item">
+                <div class="label">04</div>
+                <h4>脑机接口</h4>
+                <p>解码神经信号，连接生物智能与机器智能，拓展人类认知边界。</p>
+            </div>
+            <div class="frontier-item">
+                <div class="label">05</div>
+                <h4>量子计算</h4>
+                <p>突破经典计算极限的下一代算力范式，重构密码学、药物发现与材料模拟。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section class="philosophy" id="philosophy">
+        <div class="reveal">
+            <div class="philosophy-quote">
+                <span class="line1">我们不预测未来，</span>
+                <span class="line2">我们投资相信。</span>
+            </div>
+            <p class="philosophy-desc">
+                在共识形成之前出手，在路线被验证之前下注。<br>
+                这是博华资本对待前沿科技的态度——<br>
+                <strong style="color: var(--text);">先相信，再看见。</strong>
+            </p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <div class="name">博华资本 · BVF</div>
+            <div class="tagline">Broad Vision Funds · 先相信，再看见</div>
+        </div>
+        <div class="footer-links">
+            <a href="https://www.broadvisionfunds.com" target="_blank">官方网站 ↗</a>
+            <a href="#about">关于我们</a>
+            <a href="#portfolio">投资组合</a>
+            <a href="#frontier">前沿方向</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 博华资本 · Broad Vision Funds</span>
+        <span>北京市朝阳区建国路91号院</span>
+    </div>
+</footer>
+
+<script>
+    // ---- Portfolio Data ----
+    const portfolio = [
+        {
+            name: "生数科技",
+            nameEn: "ShengShu",
+            layer: "model",
+            layerLabel: "基模层",
+            desc: "全球首个实现数字世界与物理世界统一的通用世界模型公司。核心产品 Vidu 视频大模型，基于 U-ViT 融合架构。清华系团队，估值突破 20 亿美元，正推进赴港 IPO。",
+            meta: ["世界模型", "视频生成", "清华系"],
+            link: "https://www.shengshu-ai.com"
+        },
+        {
+            name: "潞晨科技",
+            nameEn: "Luchen",
+            layer: "infra",
+            layerLabel: "Infra 层",
+            desc: "AI 基础设施公司，核心产品 Colossal-AI 分布式训练系统与 Open-Sora 视频模型。GitHub 6 万+ Stars，双双登顶全球第一。创始人尤洋，NUS 校长青年教授。",
+            meta: ["Colossal-AI", "GitHub 60k★", "训推全栈"],
+            link: "https://luchentech.com"
+        },
+        {
+            name: "影微创新",
+            nameEn: "InnoVision",
+            layer: "infra",
+            layerLabel: "Infra 层",
+            desc: "端侧大模型 AI 芯片全栈自研企业。国内第一家基于 Transformer+Diffusion 架构量产的端侧 AI 芯片公司。2025 年出货 500 万颗，2026 年突破千万级。",
+            meta: ["端侧芯片", "全栈自研", "千万级出货"],
+            link: "#"
+        },
+        {
+            name: "羲禾科技",
+            nameEn: "Xihe",
+            layer: "infra",
+            layerLabel: "Infra 层",
+            desc: "全球头部独立第三方硅光集成芯片设计公司。产品覆盖 400G/800G/1.6T，全球市占率 13%。2025 年营收 4.61 亿，三年复合增长率 760%，已申报科创板 IPO。",
+            meta: ["硅光芯片", "市占率 13%", "IPO 进行中"],
+            link: "#"
+        },
+        {
+            name: "比特幻境",
+            nameEn: "BitFantasy",
+            layer: "hardware",
+            layerLabel: "AI 硬件",
+            desc: "AI 智能眼镜硬件公司，品牌 NIMO。29g 极致轻便，自研 0.03cc 微型光机，定价 2499 元。核心团队来自华为、Meta Reality Labs，重构光机、波导、芯片、电池全链路。",
+            meta: ["AI 眼镜", "29g", "全链路自研"],
+            link: "#"
+        },
+        {
+            name: "智平方",
+            nameEn: "AI²Robotics",
+            layer: "embodied",
+            layerLabel: "具身智能",
+            desc: "大湾区首个估值突破 200 亿的具身智能企业。自研 AlphaBrain 具身大模型，全球首发类脑架构 VLA——NeuroVLA。碰撞后 20ms 安全反射，脊髓层功耗仅 0.4W。",
+            meta: ["类脑 VLA", "估值 200亿+", "7+ 行业落地"],
+            link: "#"
+        },
+        {
+            name: "加速进化",
+            nameEn: "Booster",
+            layer: "embodied",
+            layerLabel: "具身智能",
+            desc: "人形机器人公司，产品 Booster T1 / K1。清华系团队 20 年人形机器人积累，全球累计出货超千台，覆盖 20+ 国家。RoboCup 世界冠军机型，入选福布斯 AI TOP50。",
+            meta: ["人形机器人", "出货千台", "RoboCup 冠军"],
+            link: "https://www.booster.tech"
+        },
+        {
+            name: "星尘智能",
+            nameEn: "Stardust",
+            layer: "embodied",
+            layerLabel: "具身智能",
+            desc: "全球首家实现绳驱 AI 机器人量产的具身智能企业。三位一体全栈自研：AI 模型—具身 OS—绳驱本体。估值超 100 亿，已完成股改冲刺 IPO，千台级批量交付。",
+            meta: ["绳驱机器人", "估值 100亿+", "千台交付"],
+            link: "#"
+        }
+    ];
+
+    // ---- Render Portfolio ----
+    const grid = document.getElementById('portfolioGrid');
+
+    function renderPortfolio(filter = 'all') {
+        const items = filter === 'all' ? portfolio : portfolio.filter(p => p.layer === filter);
+        grid.innerHTML = items.map((p, i) => `
+            <div class="portfolio-card" style="animation-delay: ${i * 80}ms" data-link="${p.link}">
+                <div class="card-top">
+                    <div>
+                        <div class="card-logo">${p.name}</div>
+                        <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); margin-top: 2px;">${p.nameEn}</div>
+                    </div>
+                    <span class="card-layer-tag">${p.layerLabel}</span>
+                </div>
+                <p class="card-desc">${p.desc}</p>
+                <div class="card-meta">
+                    ${p.meta.map(m => `<span><span class="dot"></span>${m}</span>`).join('')}
+                </div>
+            </div>
+        `).join('');
+
+        // Add click handlers
+        document.querySelectorAll('.portfolio-card').forEach(card => {
+            const link = card.dataset.link;
+            if (link && link !== '#') {
+                card.addEventListener('click', () => window.open(link, '_blank'));
+            }
+        });
+
+        // Re-trigger reveal
+        setTimeout(() => {
+            grid.querySelectorAll('.portfolio-card').forEach(c => c.style.opacity = '1');
+        }, 50);
+    }
+
+    renderPortfolio();
+
+    // ---- Layer Tabs ----
+    document.querySelectorAll('.layer-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.layer-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            renderPortfolio(tab.dataset.layer);
+        });
+    });
+
+    // ---- Navbar scroll effect ----
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+    });
+
+    // ---- Scroll Reveal ----
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ---- Particle Background ----
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouseX = 0, mouseY = 0;
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Create particles
+    function initParticles() {
+        particles = [];
+        const count = Math.floor((canvas.width * canvas.height) / 18000);
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                size: Math.random() * 1.5 + 0.5,
+                opacity: Math.random() * 0.5 + 0.1
+            });
+        }
+    }
+    initParticles();
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0) p.x = canvas.width;
+            if (p.x > canvas.width) p.x = 0;
+            if (p.y < 0) p.y = canvas.height;
+            if (p.y > canvas.height) p.y = 0;
+
+            // Mouse interaction
+            const dx = p.x - mouseX;
+            const dy = p.y - mouseY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+                const force = (120 - dist) / 120;
+                p.x += (dx / dist) * force * 0.5;
+                p.y += (dy / dist) * force * 0.5;
+            }
+
+            // Draw particle
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(129, 140, 248, ${p.opacity})`;
+            ctx.fill();
+
+            // Draw connections
+            for (let j = i + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dx2 = p.x - p2.x;
+                const dy2 = p.y - p2.y;
+                const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                if (dist2 < 130) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = `rgba(99, 102, 241, ${(1 - dist2 / 130) * 0.08})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        });
+
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles();
+    });
+</script>
+
+</body>
+</html>
