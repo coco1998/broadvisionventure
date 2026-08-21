@@ -106,6 +106,12 @@
             color: var(--accent-glow);
             background: rgba(99,102,241,0.08);
         }
+        .nav-logo-img {
+            height: 22px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
 
         .nav-links {
             display: flex;
@@ -686,8 +692,7 @@
 
 <nav id="navbar">
     <a href="#" class="nav-logo">
-        <span class="logo-mark">B</span>
-        博华资本
+        <img class="nav-logo-img" src="logos/bvf_logo_white.png" alt="博华资本">
     </a>
     <ul class="nav-links">
         <li><a href="#about">关于</a></li>
@@ -892,8 +897,8 @@
             monogram: "S",
             layer: "model",
             layerLabel: "基模层",
-            desc: "全球首个实现数字世界与物理世界统一的通用世界模型公司。核心产品 Vidu 视频大模型，基于 U-ViT 融合架构。清华系团队，估值突破 20 亿美元，正推进赴港 IPO。",
-            meta: ["世界模型", "视频生成", "清华系"],
+            desc: "通用世界模型的先行者。由清华系科学家创立，原创 U-ViT 融合架构（早于 Sora 采用的 DiT）。核心产品 Vidu 视频大模型性能对标国际顶尖，在 Artificial Analysis 榜单位居中国第一、全球前列；同步推出世界行动模型 Motus，贯通数字空间与物理空间的通用智能底座。",
+            meta: ["通用世界模型", "Vidu 视频大模型", "U-ViT 架构"],
             link: "https://www.shengshu-ai.com"
         },
         {
@@ -902,8 +907,8 @@
             logo: "logos/luchen.ico",
             layer: "infra",
             layerLabel: "Infra 层",
-            desc: "AI 基础设施公司，核心产品 Colossal-AI 分布式训练系统与 Open-Sora 视频模型。GitHub 6 万+ Stars，双双登顶全球第一。创始人尤洋，NUS 校长青年教授。",
-            meta: ["Colossal-AI", "GitHub 60k★", "训推全栈"],
+            desc: "AI 基础设施公司，由新加坡国立大学校长青年教授尤洋创立。核心产品 Colossal-AI 分布式训练系统多次登顶 GitHub 热榜，性能超越国际巨头方案；面向大模型训练、微调、推理提供降本增效的全栈工具链。",
+            meta: ["Colossal-AI", "分布式训练", "开源标杆"],
             link: "https://luchentech.com"
         },
         {
@@ -912,9 +917,9 @@
             logo: "logos/imvision.png",
             layer: "infra",
             layerLabel: "Infra 层",
-            desc: "端侧大模型 AI 芯片全栈自研企业。国内第一家基于 Transformer+Diffusion 架构量产的端侧 AI 芯片公司。2025 年出货 500 万颗，2026 年突破千万级。",
-            meta: ["端侧芯片", "全栈自研", "千万级出货"],
-            link: "#"
+            desc: "端侧通用人工智能（AI）芯片领域的创新者。以「芯片+算法」深度融合构筑核心竞争力，提供以视频大模型、多模态大模型、世界模型为核心的端侧 AI 完整芯片解决方案。自研 TensorBrain AI 推理计算平台，在超低功耗与超小尺寸约束下实现大模型高效推理。与全球 20+ 行业领军品牌共建端侧智能芯片生态，产品覆盖智能手机、智能眼镜、机器人等旗舰终端。",
+            meta: ["端侧 AI 芯片", "芯片+算法融合", "全球 20+ 品牌生态"],
+            link: "https://www.ai-imvision.cn"
         },
         {
             name: "羲禾科技",
@@ -922,8 +927,8 @@
             logo: "logos/xphor.png",
             layer: "infra",
             layerLabel: "Infra 层",
-            desc: "全球头部独立第三方硅光集成芯片设计公司，高速光互联领域的隐形冠军。产品覆盖 400G/800G/1.6T 全场景，全球市占率领先，已申报科创板 IPO。",
-            meta: ["硅光芯片", "全球领先", "IPO 进行中"],
+            desc: "全球头部独立第三方硅光集成芯片设计公司，高速光互联领域的隐形冠军。产品覆盖 400G/800G/1.6T 全场景，技术实力与量产能力获全球客户认可。",
+            meta: ["硅光芯片", "高速光互联", "全球领先"],
             link: "#"
         },
         {
@@ -932,9 +937,19 @@
             monogram: "B",
             layer: "hardware",
             layerLabel: "AI 硬件",
-            desc: "AI 智能眼镜硬件公司，品牌 NIMO。29g 极致轻便，自研 0.03cc 微型光机，定价 2499 元。核心团队来自华为、Meta Reality Labs，重构光机、波导、芯片、电池全链路。",
-            meta: ["AI 眼镜", "29g", "全链路自研"],
+            desc: "AI 智能眼镜品牌 NIMO 的打造者。开创「真正可日常佩戴的 AI 智能眼镜」新品类，是量产体全息光波导（VHG）的消费级产品。整机仅 29 克，自研 0.03cc 米粒级光机，团队核心成员来自华为、Meta 等顶尖光学与消费电子企业。",
+            meta: ["AI 智能眼镜", "量产体全息波导", "29g 极致轻量"],
             link: "#"
+        },
+        {
+            name: "雷鸟",
+            nameEn: "RayNeo",
+            logo: "logos/rayneo.png",
+            layer: "hardware",
+            layerLabel: "AI 硬件",
+            desc: "由 TCL 电子孵化的消费级 AR 领军企业。核心团队来自腾讯、大疆、Meta、OPPO 等顶尖科技与硬件公司。完全自研的 MicroLED 全彩光引擎，2021 年推出全球首款双目全彩 MicroLED 全息光波导 AR 眼镜，在近眼显示光学与整机量产上处于行业第一梯队。",
+            meta: ["消费级 AR", "自研光引擎", "TCL 孵化"],
+            link: "https://www.rayneo.cn"
         },
         {
             name: "智平方",
@@ -942,8 +957,8 @@
             logo: "logos/ai2robotics.ico",
             layer: "embodied",
             layerLabel: "具身智能",
-            desc: "大湾区首个估值突破 200 亿的具身智能企业。自研 AlphaBrain 具身大模型，全球首发类脑架构 VLA——NeuroVLA。碰撞后 20ms 安全反射，脊髓层功耗仅 0.4W。",
-            meta: ["类脑 VLA", "估值 200亿+", "7+ 行业落地"],
+            desc: "具身智能头部企业，由国家级领军人才郭彦东博士创立。自研 AlphaBrain 具身大模型，是全球唯一完整走完「端到端 VLA → 增强型 VLA → 类脑 VLA」三代演进的体系；2026 年首发全球第一个类脑架构 VLA——NeuroVLA，被学界认证为全球唯一同时具备主动感知、故障自恢复与时序记忆的具身智能系统。已在半导体显示、汽车制造等多个高价值行业实现真实部署。",
+            meta: ["类脑 VLA", "AlphaBrain 大模型", "多行业落地"],
             link: "#"
         },
         {
@@ -952,8 +967,8 @@
             monogram: "B",
             layer: "embodied",
             layerLabel: "具身智能",
-            desc: "人形机器人公司，产品 Booster T1 / K1。清华系团队 20 年人形机器人积累，全球累计出货超千台，覆盖 20+ 国家。RoboCup 世界冠军机型，入选福布斯 AI TOP50。",
-            meta: ["人形机器人", "出货千台", "RoboCup 冠军"],
+            desc: "人形机器人公司，产品 Booster T1 / K1。清华系团队深耕人形机器人运动控制，是 RoboCup 2026 双足人形所有组别「冠军背后的技术底座」——全球 38 支参赛队选用其平台，包揽全部金牌。以稳定可靠的本体与 Booster Studio 开发工具，降低全球具身智能创新门槛。",
+            meta: ["人形机器人", "RoboCup 冠军平台", "腿足运动控制"],
             link: "https://www.booster.tech"
         },
         {
@@ -962,9 +977,19 @@
             logo: "logos/astribot.ico",
             layer: "embodied",
             layerLabel: "具身智能",
-            desc: "全球首家实现绳驱 AI 机器人量产的具身智能企业。三位一体全栈自研：AI 模型—具身 OS—绳驱本体。估值超 100 亿，已完成股改冲刺 IPO，千台级批量交付。",
-            meta: ["绳驱机器人", "估值 100亿+", "千台交付"],
+            desc: "全球首家实现绳驱人形 AI 机器人量产的企业。首创面向 AI（Design for AI）的软硬件一体化架构，构建「AI 模型—具身 OS—绳驱本体」三位一体全栈自研体系。自研 Lumo 基座模型与 Lumo-2 隐式世界-动作模型，让机器人像人一样推理、行动，已在科研、商业服务、文娱等场景规模化落地。",
+            meta: ["绳驱机器人", "全栈自研", "Lumo 世界模型"],
             link: "#"
+        },
+        {
+            name: "灵初智能",
+            nameEn: "PsiBot",
+            logo: "logos/psibot.ico",
+            layer: "embodied",
+            layerLabel: "具身智能",
+            desc: "聚焦通用具身智能的灵巧操作，由资深产业操盘人与北大背景科学家团队联合创立。自研端到端 VLA 大模型与 21 自由度灵巧手，在全球率先实现真实世界双臂双手多技能强化学习操作；与北京大学共建具身灵巧操作联合实验室，被业内视为科学家密度最高的具身团队之一。",
+            meta: ["灵巧操作", "端到端 VLA", "北大联合实验室"],
+            link: "https://www.psibot.ai"
         }
     ];
 
