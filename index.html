@@ -1136,6 +1136,7 @@
 
     // ---- Render Portfolio ----
     const grid = document.getElementById('portfolioGrid');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function renderPortfolio(filter = 'all') {
         const items = filter === 'all' ? portfolio : portfolio.filter(p => p.layer === filter);
@@ -1213,8 +1214,6 @@
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
     // ---- Spotlight hover effect for cards ----
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     function attachSpotlight(elements) {
         elements.forEach(card => {
             card.addEventListener('mousemove', (e) => {
